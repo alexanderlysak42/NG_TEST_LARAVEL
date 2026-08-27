@@ -89,5 +89,5 @@ docker compose exec app vendor/bin/pint --test   # перевірка без з�
 docker compose exec app vendor/bin/pint          # автоформатування
 ```
 
-- `phpstan.neon` - Larastan (`larastan/larastan`), рівень 6. Два правила (`missingType.generics` для generic-типів Eloquent-зв'язків, `missingType.iterableValue` для `array`-shape) відключені явно через `ignoreErrors` - у проєкті принципово немає докблоків/анотацій в коді, а без них ці два правила незадовольнимі, тому це свідоме рішення конфігурації, а не приховування помилок.
+- `phpstan.neon` - Larastan (`larastan/larastan`), рівень 9 (максимальний). Для Eloquent-зв'язків (`Registration::gameResults()`, `GameResult::registration()`) додані PHPDoc-анотації з generic-типами (`@return HasMany<GameResult, $this>`, `@return BelongsTo<Registration, $this>`), для `GameService::play()` - `array`-shape (`@return array{number: int, result: string, amount: float}`). Для `random_int()`/`random_bytes()` (кидають `\Random\RandomException` з PHP 8.3) розставлені `@throws` по всьому ланцюжку викликів (`Registration::generateToken()` -> `RegistrationController::register()`, `PageAController::regenerate()`/`play()`), для `InvalidRegistrationLinkException` - так само у `PageAController`.
 - `Laravel Pint` (входить у стандартний скелет Laravel) - форматування за пресетом `laravel`, окремого конфігу не потрібно.

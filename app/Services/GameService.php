@@ -2,8 +2,15 @@
 
 namespace App\Services;
 
+use Random\RandomException;
+
 class GameService
 {
+    /**
+     * @return array{number: int, result: string, amount: float}
+     *
+     * @throws RandomException
+     */
     public function play(): array
     {
         $number = random_int(1, 1000);

@@ -18,6 +18,9 @@ class GameResult extends Model
         'amount' => 'decimal:2',
     ];
 
+    /**
+     * @return BelongsTo<Registration, $this>
+     */
     public function registration(): BelongsTo
     {
         return $this->belongsTo(Registration::class);

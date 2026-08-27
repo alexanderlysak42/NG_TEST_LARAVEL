@@ -6,6 +6,7 @@ use App\Models\Registration;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Random\RandomException;
 
 class RegistrationController extends Controller
 {
@@ -14,6 +15,9 @@ class RegistrationController extends Controller
         return view('home');
     }
 
+    /**
+     * @throws RandomException
+     */
     public function register(Request $request): RedirectResponse
     {
         $validated = $request->validate([

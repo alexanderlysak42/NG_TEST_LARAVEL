@@ -7,11 +7,15 @@ use App\Models\Registration;
 use App\Services\GameService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use Random\RandomException;
 
 class PageAController extends Controller
 {
     public function __construct(private readonly GameService $gameService) {}
 
+    /**
+     * @throws InvalidRegistrationLinkException
+     */
     public function show(string $token): View
     {
         $registration = $this->findValidRegistration($token);
@@ -23,6 +27,10 @@ class PageAController extends Controller
         ]);
     }
 
+    /**
+     * @throws InvalidRegistrationLinkException
+     * @throws RandomException
+     */
     public function regenerate(string $token): RedirectResponse
     {
         $registration = $this->findValidRegistration($token);
@@ -35,6 +43,9 @@ class PageAController extends Controller
         return redirect()->route('page-a.show', ['token' => $registration->token]);
     }
 
+    /**
+     * @throws InvalidRegistrationLinkException
+     */
     public function deactivate(string $token): View
     {
         $registration = $this->findValidRegistration($token);
@@ -44,6 +55,10 @@ class PageAController extends Controller
         return view('link_invalid');
     }
 
+    /**
+     * @throws InvalidRegistrationLinkException
+     * @throws RandomException
+     */
     public function play(string $token): View
     {
         $registration = $this->findValidRegistration($token);
@@ -58,6 +73,9 @@ class PageAController extends Controller
         ]);
     }
 
+    /**
+     * @throws InvalidRegistrationLinkException
+     */
     public function history(string $token): View
     {
         $registration = $this->findValidRegistration($token);
@@ -71,6 +89,9 @@ class PageAController extends Controller
         ]);
     }
 
+    /**
+     * @throws InvalidRegistrationLinkException
+     */
     private function findValidRegistration(string $token): Registration
     {
         $registration = Registration::where('token', $token)->first();
