@@ -20,7 +20,7 @@
 
     <form method="post" action="{{ route('page-a.play', $registration->token) }}" style="display:inline">
         @csrf
-        <button type="submit">Imfeelinglucky</button>
+        <button type="submit">Im feeling lucky</button>
     </form>
 
     <form method="get" action="{{ route('page-a.history', $registration->token) }}" style="display:inline">

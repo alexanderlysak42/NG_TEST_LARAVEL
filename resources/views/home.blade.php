@@ -24,7 +24,7 @@
         </label>
 
         <label>
-            Phonenumber
+            Phone number
             <input type="text" name="phone_number" value="{{ old('phone_number') }}" required>
         </label>
 
