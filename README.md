@@ -68,6 +68,7 @@
 - `app/Http/Controllers` - обробка HTTP-запитів (реєстрація, дії сторінки А).
 - `app/Models` - Eloquent-моделі (`Registration`, `GameResult`) з роботою з БД.
 - `app/Services` - ігрова логіка (`GameService`), незалежна від HTTP та бази даних.
+- `app/Exceptions` - `InvalidRegistrationLinkException` (невалідний/протермінований токен -> 404 з `link_invalid`-view, обробляється через `render()`, без дублювання перевірки в кожному екшені).
 - `resources/views` - Blade-шаблони.
 - `routes/web.php` - маршрути застосунку.
 - `database/migrations` - міграції Laravel (`registrations`, `game_results`), застосовуються через `php artisan migrate`.
@@ -79,3 +80,14 @@
 - `GameService` і моделі (`Registration`, `GameResult`) існують в одній реалізації.
 - Тестів з моками немає, отже інтерфейси заради тестованості нічого не дають.
 - Eloquent-моделі вже є достатньою абстракцією над БД - окремий repository-шар поверх них лише дублював би виклики `Model::query()`.
+
+## Статичний аналіз та стиль коду
+
+```
+docker compose exec app vendor/bin/phpstan analyse
+docker compose exec app vendor/bin/pint --test   # перевірка без змін
+docker compose exec app vendor/bin/pint          # автоформатування
+```
+
+- `phpstan.neon` - Larastan (`larastan/larastan`), рівень 6. Два правила (`missingType.generics` для generic-типів Eloquent-зв'язків, `missingType.iterableValue` для `array`-shape) відключені явно через `ignoreErrors` - у проєкті принципово немає докблоків/анотацій в коді, а без них ці два правила незадовольнимі, тому це свідоме рішення конфігурації, а не приховування помилок.
+- `Laravel Pint` (входить у стандартний скелет Laravel) - форматування за пресетом `laravel`, окремого конфігу не потрібно.
